@@ -1,0 +1,62 @@
+class Bal {
+  int x;
+  int y;
+  int diameter;
+    
+  Bal(int ballX, int ballY, int diameter) {
+    x = ballX;
+    y = ballY;
+    this.diameter = diameter;
+  }
+
+  void tekenBall() {
+      ellipse(x, y  , diameter, diameter);
+  }
+}
+
+Bal mijnBal;
+
+int score = 0;
+int diameter = 30;
+int snelheid;
+int ballYSpeed = 5;
+int rectY = 450;
+int rectW = 100;
+int rectH = 20;
+int puntX = 100;
+int rectX = mouseX;
+
+
+
+void setup() {
+  size(500, 500);
+  snelheid = 50;
+  rectMode(CENTER);
+  mijnBal = new Bal(200, 100, 30);
+}
+
+void resetBall() {
+  mijnBal.y = 0;
+  mijnBal.x = (int)random(0, width);
+}
+
+void draw() {
+  background(32);
+  
+  textSize(35);
+  text("SCORE = " + score, 40, 120);
+  
+  mijnBal.tekenBall();
+    rect(mouseX, rectY, rectW, rectH);
+  
+  mijnBal.y += ballYSpeed;
+  
+  if (mijnBal.y + mijnBal.diameter/2 >= rectY - rectH/2 && mijnBal.y - mijnBal.diameter/2 < rectY - rectH/2 && mijnBal.x + mijnBal.diameter/2 >= mouseX - rectW/2 && mijnBal.x - mijnBal.diameter/2 <= mouseX + rectW/2 && ballYSpeed > 0) {
+  resetBall();
+    score++;
+  }
+  
+  if (mijnBal.y > height) {
+    resetBall();
+   }
+  }
