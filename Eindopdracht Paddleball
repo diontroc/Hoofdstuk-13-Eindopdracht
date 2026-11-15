@@ -1,7 +1,7 @@
 class Bal {
   int x;
   int y;
-  int diameter;
+  int diameter = 30;
     
   Bal(int ballX, int ballY, int diameter) {
     x = ballX;
@@ -12,12 +12,15 @@ class Bal {
   void tekenBall() {
       ellipse(x, y  , diameter, diameter);
   }
+      
+  void resetBall() {
+     y = -diameter;
+     x = (int)random(diameter/2, width - diameter/2);
 }
+  }
 
-Bal mijnBal;
-
+Bal[] ballen = new Bal[3];
 int score = 0;
-int diameter = 30;
 int snelheid;
 int ballYSpeed = 5;
 int rectY = 450;
@@ -25,19 +28,16 @@ int rectW = 100;
 int rectH = 20;
 int puntX = 100;
 int rectX = mouseX;
-
+int i;
 
 
 void setup() {
   size(500, 500);
   snelheid = 50;
   rectMode(CENTER);
-  mijnBal = new Bal(200, 100, 30);
-}
-
-void resetBall() {
-  mijnBal.y = 0;
-  mijnBal.x = (int)random(0, width);
+  for (int i = 0; i < ballen.length; i++){
+    ballen[i] = new Bal(100 + i * 150, -100, 30);
+  }
 }
 
 void draw() {
@@ -46,17 +46,20 @@ void draw() {
   textSize(35);
   text("SCORE = " + score, 40, 120);
   
-  mijnBal.tekenBall();
     rect(mouseX, rectY, rectW, rectH);
+    
+    for (int j = 0; j < ballen.length; j++){
+      ballen[j].tekenBall();
   
-  mijnBal.y += ballYSpeed;
+  ballen[j].y += ballYSpeed;
   
-  if (mijnBal.y + mijnBal.diameter/2 >= rectY - rectH/2 && mijnBal.y - mijnBal.diameter/2 < rectY - rectH/2 && mijnBal.x + mijnBal.diameter/2 >= mouseX - rectW/2 && mijnBal.x - mijnBal.diameter/2 <= mouseX + rectW/2 && ballYSpeed > 0) {
-  resetBall();
+  if (ballen[j].y + ballen[j].diameter/2 >= rectY - rectH/2 && ballen[j].y - ballen[j].diameter/2 < rectY - rectH/2 && ballen[j].x + ballen[j].diameter/2 >= mouseX - rectW/2 && ballen[j].x - ballen[j].diameter/2 <= mouseX + rectW/2 && ballYSpeed > 0) {
+    ballen[j].resetBall();
     score++;
   }
   
-  if (mijnBal.y > height) {
-    resetBall();
+  if (ballen[j].y> height) {
+    ballen[j].resetBall();
    }
   }
+}
